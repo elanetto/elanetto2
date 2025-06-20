@@ -24,7 +24,7 @@ export function Header() {
           />
         </Link>
         <Link to="/om"
-        className="text-dirtyrosa hover:text-pink-950"
+        className="text-dirtyrosa chewy-regular font-bold text-xl hover:text-pink-950"
         >Om elanetto</Link>
       </div>
     </header>
