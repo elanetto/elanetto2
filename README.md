@@ -1,5 +1,6 @@
 # elanetto Design - Landing page
-A page to use while we are creating the webshop. 
+A page to use while we are creating the webshop: https://www.elanetto.no/ 
+
 This is also the first React project I made work with webhosting at Domeneshop.
 
 To make this site (React project) work with FileZilla and Domenehsop, we had to set up the router as a Hash Routher (#):
