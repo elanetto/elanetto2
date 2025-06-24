@@ -1,9 +1,9 @@
 # elanetto Design - Landing page
-A page to use while we are creating the webshop: https://www.elanetto.no/ 
+En landingsnettside som brukes mens man bygger opp nettbutikken. Besøk siden her: https://www.elanetto.no/ 
 
-This is also the first React project I made work with webhosting at Domeneshop.
+Dette er det første React prosjektet jeg har satt opp med webhosting i Domeneshop.
 
-To make this site (React project) work with FileZilla and Domenehsop, we had to set up the router as a Hash Routher (#):
+For å få dette prosjektet (React) til å fungere med FileZilla og Domenehsop, så er Router i main.jsx satt opp med Hash Routher (#):
 
 
 ```bash
@@ -40,7 +40,7 @@ createRoot(document.getElementById('root')).render(
 
 ```
 
-We also had to add the base to be used in the vite.config file:
+Jeg måtte også sette opp base til "/" i vite.config filen:
 
 ```bash
 import { defineConfig } from "vite";
@@ -53,15 +53,19 @@ export default defineConfig({
 });
 ```
 
-Then, simply build th dist file:
+Tilslutt må vi lage filene som skal hostes gjennom Domeneshop (dist-folder):
 
 ```bash
 npm run build
 ```
 
-And upload the contents of the dist file to filezilla!
+...og da var det bare å laste opp innholdet i dist gjennom FileZilla!
 
-PS: I also had to add a direct link to the favicon in the root html document for the favicon to work:
+PS: Jeg måtte også bruke en direkte link til opplastet bilde i root index.html for at favicon skulle fungere:
 ```bash
 <link rel="icon" type="image/png" href="https://elanetto.no/star.png" />
 ```
+
+# React Pakker
+I dette prosjektet har jeg brukt følgende React Packages:
+- [React Responsive Carousel](https://www.npmjs.com/package/react-responsive-carousel)
