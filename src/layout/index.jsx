@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 pb-20 bg-pink-100">
+      <main className="flex-1 pb-20 bg-bleik">
         <Outlet />
       </main>
       <Footer />
