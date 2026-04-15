@@ -2,7 +2,10 @@ export function Footer() {
   return (
     <footer className="bg-gray-800 h-60 w-full text-white flex justify-center items-center">
       <div className="text-sm text-center">
-        <p>© {new Date().getFullYear()} Anette Therese Lindberg</p>
+        <p>
+          © {new Date().getFullYear()} Anette Therese Lindberg - Iillustratør og
+          programmerer
+        </p>
         <p className="italic text-xs pt-4">
           Denne nettsiden er laget av Anette Therese Lindberg,
         </p>
