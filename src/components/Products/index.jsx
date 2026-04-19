@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { client } from "../../lib/sanity";
-import { urlFor } from "../../lib/image";
+import ProductCard from "../ProductCard";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    client.fetch(`*[_type == "product"]`).then((data) => setProducts(data));
+    client.fetch(`*[_type == "product"]`).then(setProducts);
   }, []);
 
   return (
@@ -15,27 +15,11 @@ export default function Products() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div
+          <ProductCard
             key={product._id}
-            className="group bg-white rounded-xl p-4 shadow hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col cursor-pointer"
-          >
-            {/* Image wrapper */}
-            <div className="bg-rose-200 rounded-lg mb-3 overflow-hidden">
-              <img
-                src={urlFor(product.image).width(300).url()}
-                alt={product.title?.no}
-                className="w-full h-48 object-cover transition duration-200 group-hover:scale-105"
-              />
-            </div>
-
-            <h2 className="text-sm font-medium mt-2">
-              {product.title?.no}
-            </h2>
-
-            <p className="text-sm font-semibold mt-auto">
-              {product.price} kr
-            </p>
-          </div>
+            product={product}
+            link={`#/produkt/${product.slug?.current}`}
+          />
         ))}
       </div>
     </div>
