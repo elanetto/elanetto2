@@ -13,7 +13,7 @@ export default function ProductCard({ product, link }) {
           className="w-full h-full object-contain drop-shadow-md transition duration-300  hover:-translate-y-2 hover:scale-[1.02]"
         />
 
-        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#6e3b34]/95 to-[#6e3b34]/70 text-white px-4 py-2 flex items-end justify-between">
+        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#6e3b34]/95 to-[#6e3b34]/70 text-white px-4 py-2 flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold leading-tight mb-0.5">
               {product.title?.no}
