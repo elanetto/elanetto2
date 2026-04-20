@@ -4,23 +4,32 @@ export default function ProductCard({ product, link }) {
   return (
     <a
       href={link || "#"}
-      className="group bg-white rounded-xl shadow hover:shadow-lg hover:scale-105 transition overflow-hidden cursor-pointer flex flex-col"
+      className="group block rounded-2xl overflow-hidden shadow hover:shadow-xl transition duration-300 cursor-pointer"
     >
-      {/* Image */}
-      <div className="bg-rose-200 overflow-hidden">
+      <div className="relative bg-[#e8b6b9] p-6 h-80 flex items-center justify-center">
         <img
-          src={urlFor(product.image).width(400).url()}
+          src={urlFor(product.image).width(600).url()}
           alt={product.title?.no}
-          className="w-full h-48 object-cover transition duration-200 group-hover:scale-110"
+          className="w-full h-full object-contain drop-shadow-md transition duration-300  hover:-translate-y-2 hover:scale-[1.02]"
         />
-      </div>
 
-      {/* Bottom bar */}
-      <div className="bg-pink-300 py-2 px-2 text-center">
-        <h3 className="font-semibold text-white text-sm">
-          {product.title?.no}
-        </h3>
-        <p className="text-white text-xs">{product.price} kr</p>
+        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#6e3b34]/95 to-[#6e3b34]/70 text-white px-4 py-2 flex items-end justify-between">
+          <div>
+            <h3 className="text-lg font-semibold leading-tight mb-0.5">
+              {product.title?.no}
+            </h3>
+
+            <p className="text-xs uppercase opacity-80">
+              {product.category === "sticker" && "Klistremerke"}
+              {product.category === "bookmark" && "Bokmerke"}
+              {product.category === "card" && "Kort"}
+            </p>
+          </div>
+
+          <p className="text-lg font-semibold whitespace-nowrap">
+            {product.price} kr
+          </p>
+        </div>
       </div>
     </a>
   );
