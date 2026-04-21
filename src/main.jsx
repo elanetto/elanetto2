@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import Layout from "./layout";
 import Om from "./pages/Om";
 import ProductsPage from "./pages/Produkter";
+import ProductPage from "./pages/ProduktSide";
 
 const router = createHashRouter([
   {
@@ -23,6 +24,10 @@ const router = createHashRouter([
       {
         path: "/produkter",
         element: <ProductsPage />,
+      },
+      {
+        path: "/produkt/:slug",
+        element: <ProductPage />,
       },
     ],
   },
