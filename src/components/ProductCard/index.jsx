@@ -9,7 +9,7 @@ export default function ProductCard({ product }) {
     >
       <div className="relative bg-[#e8b6b9] p-6 h-80 flex items-center justify-center">
         <img
-          src={urlFor(product.image).width(600).url()}
+          src={urlFor(product.images?.[0]).width(600).url()}
           alt={product.title?.no}
           className="w-full h-full object-contain drop-shadow-md transition duration-300 hover:-translate-y-2 hover:scale-[1.02]"
         />

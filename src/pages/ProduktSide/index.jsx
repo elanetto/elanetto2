@@ -19,8 +19,14 @@ export default function ProductPage() {
 
   if (!product) return <p className="p-6">Laster produkt...</p>;
 
-  // FALLBACK: hvis kun ett bilde
-  const images = product.images?.length ? product.images : [product.image];
+  const images = product.images || [];
+
+  // EDGE CASE: ingen bilder
+  if (!images.length) {
+    return <p className="p-6">Mangler bilde</p>;
+  }
+
+  const currentImage = images[currentIndex];
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
@@ -28,15 +34,27 @@ export default function ProductPage() {
         {/* IMAGE GALLERY */}
         <div className="flex flex-col gap-4">
           {/* MAIN IMAGE */}
+          {/* MAIN IMAGE */}
           <div
-            className="bg-[#e8b6b9] rounded-2xl p-10 flex items-center justify-center h-[450px] cursor-zoom-in"
+            className="bg-[#e8b6b9] rounded-2xl p-10 flex items-center justify-center h-[450px] cursor-zoom-in relative group"
             onClick={() => setIsOpen(true)}
           >
             <img
-              src={urlFor(images[currentIndex]).width(800).url()}
-              alt={product.title?.no}
+              src={urlFor(currentImage).width(800).url()}
+              alt={currentImage?.alt || product.title?.no}
               className="max-h-full object-contain"
             />
+
+            {/* TOOLTIP */}
+            {currentImage?.alt && (
+              <div
+                className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm text-white text-sm md:text-sm px-4 py-2 
+                  opacity-100 md:opacity-0 md:group-hover:opacity-100 
+                  transition duration-300 rounded-b-2xl"
+              >
+                {currentImage.alt}
+              </div>
+            )}
           </div>
 
           {/* THUMBNAILS */}
@@ -54,7 +72,7 @@ export default function ProductPage() {
                 >
                   <img
                     src={urlFor(img).width(200).url()}
-                    alt=""
+                    alt={img?.alt || product.title?.no}
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -127,15 +145,18 @@ export default function ProductPage() {
           onClick={() => setIsOpen(false)}
         >
           <div className="relative max-w-5xl w-full flex items-center justify-center">
-            {/* CLOSE BUTTON (valgfri, men nice) */}
-            <button className="absolute top-2 right-2 text-white text-3xl z-10 hover:scale-110 transition">
+            {/* CLOSE BUTTON */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-2 text-white text-3xl z-10 hover:scale-110 transition"
+            >
               ✕
             </button>
 
             {/* IMAGE */}
             <img
-              src={urlFor(images[currentIndex]).width(1000).url()}
-              alt=""
+              src={urlFor(currentImage).width(1000).url()}
+              alt={currentImage?.alt || product.title?.no}
               className="max-h-[90vh] w-auto object-contain rounded-xl shadow-xl"
             />
           </div>
