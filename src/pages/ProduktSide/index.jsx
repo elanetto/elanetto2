@@ -21,7 +21,7 @@ export default function ProductPage() {
 
   const images = product.images || [];
 
-  // EDGE CASE: ingen bilder
+  // EDGE CASE
   if (!images.length) {
     return <p className="p-6">Mangler bilde</p>;
   }
@@ -34,7 +34,6 @@ export default function ProductPage() {
         {/* IMAGE GALLERY */}
         <div className="flex flex-col gap-4">
           {/* MAIN IMAGE */}
-          {/* MAIN IMAGE */}
           <div
             className="bg-[#e8b6b9] rounded-2xl p-10 flex items-center justify-center h-[450px] cursor-zoom-in relative group"
             onClick={() => setIsOpen(true)}
@@ -45,13 +44,41 @@ export default function ProductPage() {
               className="max-h-full object-contain"
             />
 
+            {/* PIL VENSTRE */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex((prev) =>
+                    prev === 0 ? images.length - 1 : prev - 1
+                  );
+                }}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/60 transition"
+              >
+                ‹
+              </button>
+            )}
+
+            {/* PIL HØYRE */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex((prev) =>
+                    prev === images.length - 1 ? 0 : prev + 1
+                  );
+                }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/60 transition"
+              >
+                ›
+              </button>
+            )}
+
             {/* TOOLTIP */}
             {currentImage?.alt && (
-              <div
-                className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm text-white text-sm md:text-sm px-4 py-2 
-                  opacity-100 md:opacity-0 md:group-hover:opacity-100 
-                  transition duration-300 rounded-b-2xl"
-              >
+              <div className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm text-white text-xs md:text-sm px-4 py-2 
+                opacity-100 md:opacity-0 md:group-hover:opacity-100 
+                transition duration-300 rounded-b-2xl">
                 {currentImage.alt}
               </div>
             )}
@@ -103,8 +130,13 @@ export default function ProductPage() {
           </p>
 
           {/* BESKRIVELSE */}
-          <p className="text-gray-700 mb-6 leading-relaxed">
+          <p className="text-gray-700 mb-4 leading-relaxed">
             {product.description?.no}
+          </p>
+
+          {/* FARGE INFO */}
+          <p className="text-xs text-gray-500 mb-6 italic">
+            Merk: Farger kan variere noe fra hvordan de vises på skjerm til det fysiske produktet.
           </p>
 
           {/* STØRRELSE */}
@@ -145,7 +177,6 @@ export default function ProductPage() {
           onClick={() => setIsOpen(false)}
         >
           <div className="relative max-w-5xl w-full flex items-center justify-center">
-            {/* CLOSE BUTTON */}
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-2 right-2 text-white text-3xl z-10 hover:scale-110 transition"
@@ -153,7 +184,6 @@ export default function ProductPage() {
               ✕
             </button>
 
-            {/* IMAGE */}
             <img
               src={urlFor(currentImage).width(1000).url()}
               alt={currentImage?.alt || product.title?.no}
