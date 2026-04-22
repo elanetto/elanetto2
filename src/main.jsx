@@ -7,6 +7,7 @@ import Layout from "./layout";
 import Om from "./pages/Om";
 import ProductsPage from "./pages/Produkter";
 import ProductPage from "./pages/ProduktSide";
+import CartPage from "./pages/Handlekurv"
 
 const router = createHashRouter([
   {
@@ -28,6 +29,10 @@ const router = createHashRouter([
       {
         path: "/produkt/:slug",
         element: <ProductPage />,
+      },
+      {
+        path: "/handlekurv",
+        element: <CartPage />,
       },
     ],
   },
