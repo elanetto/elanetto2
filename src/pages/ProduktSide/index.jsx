@@ -161,8 +161,7 @@ export default function ProductPage() {
           </p>
 
           <p className="text-xs text-gray-500 mb-6 italic">
-            Merk: Farger kan variere noe fra hvordan de vises på skjerm til det
-            fysiske produktet.
+            Merk: Farger kan se litt annerledes ut som fysiskt produkt sammenlignet med hvordan de vises på skjerm. Farger kan variere litt fra bildene som blir vist.
           </p>
 
           {product.size?.width && product.size?.height && (
