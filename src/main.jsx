@@ -8,6 +8,7 @@ import Om from "./pages/Om";
 import ProductsPage from "./pages/Produkter";
 import ProductPage from "./pages/ProduktSide";
 import CartPage from "./pages/Handlekurv"
+import TagPage from "./pages/TagPage"
 
 const router = createHashRouter([
   {
@@ -34,6 +35,10 @@ const router = createHashRouter([
         path: "/handlekurv",
         element: <CartPage />,
       },
+      {
+        path: "/tag/:tag",
+        element: <TagPage />,
+      }
     ],
   },
 ]);

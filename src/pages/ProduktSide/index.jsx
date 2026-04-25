@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { client } from "../../lib/sanity";
 import { urlFor } from "../../lib/image";
 import { useCartStore } from "../../store/cartStore";
+import { Link } from "react-router-dom";
 
 export default function ProductPage() {
   const { slug } = useParams();
@@ -161,7 +162,9 @@ export default function ProductPage() {
           </p>
 
           <p className="text-xs text-gray-500 mb-6 italic">
-            Merk: Farger kan se litt annerledes ut som fysiskt produkt sammenlignet med hvordan de vises på skjerm. Farger kan variere litt fra bildene som blir vist.
+            Merk: Farger kan se litt annerledes ut som fysiskt produkt
+            sammenlignet med hvordan de vises på skjerm. Farger kan variere litt
+            fra bildene som blir vist.
           </p>
 
           {product.size?.width && product.size?.height && (
@@ -176,12 +179,13 @@ export default function ProductPage() {
           {product.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
               {product.tags.map((tag, index) => (
-                <span
+                <Link
                   key={index}
-                  className="bg-[#6e3b34]/10 text-[#6e3b34] text-xs px-3 py-1 rounded-full"
+                  to={`/tag/${tag}`}
+                  className="bg-[#6e3b34]/10 text-[#6e3b34] text-xs px-3 py-1 rounded-full hover:bg-[#6e3b34]/20 transition"
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
