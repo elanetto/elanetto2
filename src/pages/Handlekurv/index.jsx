@@ -27,6 +27,37 @@ export default function CartPage() {
   const shipping = subtotal > 500 ? 0 : cart.length > 0 ? 49 : 0;
   const total = subtotal + shipping;
 
+  // 💳 STRIPE CHECKOUT
+  const handleCheckout = async () => {
+    const items = cart.map((item) => ({
+      _id: item._id,
+      title: item.title?.no || "Produkt",
+      price: item.price,
+      quantity: item.quantity,
+      image: item.images?.[0] ? urlFor(item.images[0]).width(500).url() : null,
+    }));
+
+    const res = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items,
+        shipping,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      console.error("Stripe error:", data);
+      alert("Noe gikk galt med betaling 😬");
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
       <h1 className="text-2xl font-bold mb-6">Handlekurv</h1>
@@ -39,7 +70,6 @@ export default function CartPage() {
             key={item._id}
             className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 bg-white rounded-xl p-4 shadow"
           >
-            {/* LINK */}
             <Link
               to={`/produkt/${item.slug?.current}`}
               className="contents group cursor-pointer"
@@ -62,7 +92,6 @@ export default function CartPage() {
               </div>
             </Link>
 
-            {/* QUANTITY */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => decrease(item)}
@@ -81,7 +110,6 @@ export default function CartPage() {
               </button>
             </div>
 
-            {/* PRICE */}
             <p className="font-semibold min-w-[80px] text-right">
               {item.price * item.quantity} kr
             </p>
@@ -89,7 +117,6 @@ export default function CartPage() {
         ))}
       </div>
 
-      {/* 🚚 GRATIS FRAKT MELDING */}
       {subtotal > 0 && subtotal < 500 && (
         <div className="mt-6 bg-white/60 rounded-xl px-4 py-3 text-sm text-center">
           <p>
@@ -100,17 +127,14 @@ export default function CartPage() {
         </div>
       )}
 
-      {/* 💰 SUMMARY */}
       {cart.length > 0 && (
         <div className="mt-8 flex flex-col items-end gap-2">
           <div className="w-full max-w-xs space-y-2 text-right">
-            {/* DELSUM */}
             <div className="flex justify-between text-sm">
               <span>Produkter</span>
               <span>{subtotal} kr</span>
             </div>
 
-            {/* PORTO */}
             <div className="flex justify-between text-sm">
               <span>Porto</span>
               <span>
@@ -122,15 +146,20 @@ export default function CartPage() {
               </span>
             </div>
 
-            {/* TOTAL */}
             <div className="flex justify-between text-lg font-bold border-t pt-2">
               <span>Totalt</span>
               <span>{total} kr</span>
             </div>
           </div>
 
-          {/* CTA */}
-          <button className="mt-4 bg-[#6e3b34] text-white px-6 py-3 rounded-xl hover:opacity-90">
+          {/* 💳 CTA */}
+          <button
+            onClick={() => {
+              console.log("👉 Klikk!");
+              handleCheckout();
+            }}
+            className="mt-4 bg-[#6e3b34] text-white px-6 py-3 rounded-xl hover:opacity-90"
+          >
             Gå til betaling
           </button>
         </div>

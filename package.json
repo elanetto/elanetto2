@@ -17,6 +17,7 @@
     "react-dom": "^19.1.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.6.2",
+    "stripe": "^22.1.0",
     "tailwindcss": "^4.1.10",
     "zustand": "^5.0.12"
   },
