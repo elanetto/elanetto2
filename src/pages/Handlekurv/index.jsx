@@ -29,6 +29,7 @@ export default function CartPage() {
 
   // 💳 STRIPE CHECKOUT
   const handleCheckout = async () => {
+    console.log("🔥 handler kjører");
     const items = cart.map((item) => ({
       _id: item._id,
       title: item.title?.no || "Produkt",
@@ -42,10 +43,7 @@ export default function CartPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        items,
-        shipping,
-      }),
+      body: JSON.stringify({ items }),
     });
 
     const data = await res.json();
@@ -156,6 +154,7 @@ export default function CartPage() {
           <button
             onClick={() => {
               console.log("👉 Klikk!");
+              alert("CLICK FUNKER");
               handleCheckout();
             }}
             className="mt-4 bg-[#6e3b34] text-white px-6 py-3 rounded-xl hover:opacity-90"
