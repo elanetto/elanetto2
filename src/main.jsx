@@ -9,6 +9,8 @@ import ProductsPage from "./pages/Produkter";
 import ProductPage from "./pages/ProduktSide";
 import CartPage from "./pages/Handlekurv"
 import TagPage from "./pages/TagPage"
+import Success from "./pages/Success"
+import Cancel from "./pages/Cancel"
 
 const router = createHashRouter([
   {
@@ -38,6 +40,14 @@ const router = createHashRouter([
       {
         path: "/tag/:tag",
         element: <TagPage />,
+      },
+      {
+        path: "/success",
+        element: <Success />,
+      },
+      {
+        path: "/cancel",
+        element: <Cancel />,
       }
     ],
   },
