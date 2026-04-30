@@ -153,8 +153,6 @@ export default function CartPage() {
           {/* 💳 CTA */}
           <button
             onClick={() => {
-              console.log("👉 Klikk!");
-              alert("CLICK FUNKER");
               handleCheckout();
             }}
             className="mt-4 bg-[#6e3b34] text-white px-6 py-3 rounded-xl hover:opacity-90"
