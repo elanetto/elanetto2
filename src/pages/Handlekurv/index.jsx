@@ -1,11 +1,13 @@
 import { useCartStore } from "../../store/cartStore";
 import { urlFor } from "../../lib/image";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function CartPage() {
   const cart = useCartStore((state) => state.cart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const [loading, setLoading] = useState(false);
 
   const increase = (item) => {
     updateQuantity(item._id, item.quantity + 1);
@@ -29,30 +31,47 @@ export default function CartPage() {
 
   // 💳 STRIPE CHECKOUT
   const handleCheckout = async () => {
-    console.log("🔥 handler kjører");
-    const items = cart.map((item) => ({
-      _id: item._id,
-      title: item.title?.no || "Produkt",
-      price: item.price,
-      quantity: item.quantity,
-      image: item.images?.[0] ? urlFor(item.images[0]).width(500).url() : null,
-    }));
+    if (loading) return;
 
-    const res = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ items }),
-    });
+    setLoading(true);
 
-    const data = await res.json();
+    try {
+      const items = cart.map((item) => ({
+        _id: item._id,
+        title: item.title?.no || "Produkt",
+        price: item.price,
+        quantity: item.quantity,
+        image: item.images?.[0]
+          ? urlFor(item.images[0]).width(500).url()
+          : null,
+      }));
 
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      console.error("Stripe error:", data);
+      // 💾 lagre ordre til success-siden
+      localStorage.setItem("lastOrder", JSON.stringify(items));
+
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Server error");
+      }
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL");
+      }
+    } catch (err) {
+      console.error("Stripe error:", err);
       alert("Noe gikk galt med betaling 😬");
+      setLoading(false);
     }
   };
 
@@ -152,12 +171,13 @@ export default function CartPage() {
 
           {/* 💳 CTA */}
           <button
-            onClick={() => {
-              handleCheckout();
-            }}
-            className="mt-4 bg-[#6e3b34] text-white px-6 py-3 rounded-xl hover:opacity-90"
+            onClick={handleCheckout}
+            disabled={loading}
+            className={`mt-4 px-6 py-3 rounded-xl text-white transition 
+    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#6e3b34] hover:opacity-90"}
+  `}
           >
-            Gå til betaling
+            {loading ? "Sender deg til betaling..." : "Gå til betaling"}
           </button>
         </div>
       )}

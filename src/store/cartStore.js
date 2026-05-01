@@ -38,9 +38,12 @@ export const useCartStore = create(
             item._id === id ? { ...item, quantity } : item
           ),
         })),
+
+      // 🧹 NY
+      clearCart: () => set({ cart: [] }),
     }),
     {
-      name: "cart-storage", // 💾 lagres i localStorage
+      name: "cart-storage",
     }
   )
 );

@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid items" });
     }
 
-    // 🧠 fallback hvis origin mangler (kan skje i prod)
+    // 🧠 fallback hvis origin mangler
     const origin =
       req.headers.origin ||
       process.env.NEXT_PUBLIC_SITE_URL ||
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
           name: item.title || "Produkt",
           images: item.image ? [item.image] : [],
         },
-        unit_amount: Math.round(item.price * 100), // øre
+        unit_amount: Math.round(item.price * 100),
       },
       quantity: item.quantity || 1,
     }));
@@ -36,6 +36,19 @@ export default async function handler(req, res) {
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
+
+      // 📦 BE OM ADRESSE
+      shipping_address_collection: {
+        allowed_countries: ["NO"],
+      },
+
+      // 📱 (valgfritt, men veldig nyttig)
+      phone_number_collection: {
+        enabled: true,
+      },
+
+      // 🧾 dette gjør at Stripe lagrer info på kunden
+      billing_address_collection: "auto",
 
       // ✅ Redirects
       success_url: `${origin}/success`,
