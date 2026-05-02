@@ -53,10 +53,8 @@ export default function ProductPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
-
       {/* GRID */}
       <div className="grid md:grid-cols-2 gap-12">
-
         {/* IMAGE GALLERY */}
         <div className="flex flex-col gap-4">
           <div
@@ -78,7 +76,7 @@ export default function ProductPage() {
                   onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex((prev) =>
-                      prev === 0 ? images.length - 1 : prev - 1
+                      prev === 0 ? images.length - 1 : prev - 1,
                     );
                   }}
                   className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white w-8 h-8 rounded-full"
@@ -90,7 +88,7 @@ export default function ProductPage() {
                   onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex((prev) =>
-                      prev === images.length - 1 ? 0 : prev + 1
+                      prev === images.length - 1 ? 0 : prev + 1,
                     );
                   }}
                   className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white w-8 h-8 rounded-full"
@@ -165,15 +163,22 @@ export default function ProductPage() {
             onClick={() => {
               addToCart(product);
               setAdded(true);
-              setTimeout(() => setAdded(false), 1500);
+
+              setTimeout(() => {
+                setAdded(false);
+              }, 1500);
             }}
-            className={`py-3 rounded-xl ${
-              added
-                ? "bg-yellow-950 text-white"
-                : "bg-[#6e3b34] text-white"
-            }`}
+            className={`py-3 rounded-xl text-white transition-all duration-300 flex items-center justify-center gap-2
+             ${added ? "bg-red-950 scale-105 animate-bounce" : "bg-[#6e3b34] hover:opacity-90"}`}
           >
-            {added ? "Lagt til!" : "Legg i handlekurv"}
+            {added ? (
+              <>
+                <span className="text-white font-bold">✓</span>
+                Lagt til!
+              </>
+            ) : (
+              "Legg i handlekurv"
+            )}
           </button>
         </div>
       </div>
