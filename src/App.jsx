@@ -3,7 +3,7 @@ import InstagramEmbed from "./components/InstagramEmbed";
 import FeaturedEtsyProducts from "./components/FeaturedEtsyProducts";
 import video from "./assets/video/S0003-video.MP4";
 import videoPreview from "./assets/video/S0003-02.jpg";
-import ProductList from "./components/ProductList";
+import Products from "./components/Products";
 
 import carouselImage1 from "./assets/images/carousel/carousel-backpack.jpg";
 import carouselImage2 from "./assets/images/carousel/carousel-derpduck.jpg";
@@ -74,9 +74,9 @@ function App() {
           Your browser does not support the video tag.
         </video>
       </div>
-
-      <ProductList />
-
+      <div className="w-full max-w-4xl ">
+        <Products />
+      </div>
     </div>
   );
 }
