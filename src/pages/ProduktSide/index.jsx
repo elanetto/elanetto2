@@ -22,6 +22,17 @@ export default function ProductPage() {
   const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isOpen]);
+
+  useEffect(() => {
     client
       .fetch(`*[_type == "product" && slug.current == $slug][0]`, { slug })
       .then(setProduct);
@@ -197,17 +208,27 @@ export default function ProductPage() {
       {/* MODAL */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
           onClick={() => setIsOpen(false)}
         >
+          {/* CONTENT */}
           <div
-            className="relative max-w-5xl w-full"
+            className="relative w-full max-w-2xl flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* ❌ LUKK KNAPP */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-2 bg-black/60 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl z-10"
+            >
+              ✕
+            </button>
+
+            {/* 📸 IMAGE */}
             <img
               src={urlFor(currentImage).width(1000).url()}
               alt={currentImage?.alt || product.title?.no}
-              className="max-h-[90vh] w-auto object-contain rounded-xl"
+              className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl"
             />
           </div>
         </div>
