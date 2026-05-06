@@ -111,11 +111,24 @@ export default function CartPage() {
               </Link>
             ) : (
               // 🧩 BUNDLE VISNING
-              <>
-                <div className="w-16 h-16 bg-[#e8b6b9] rounded-lg flex items-center justify-center">
-                  🎁
+              <Link
+                to={`/pakke/${item.slug?.current}`}
+                className="contents group cursor-pointer"
+              >
+                {/* 🖼️ BUNDLE IMAGE */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#e8b6b9] flex items-center justify-center">
+                  {item.images?.[0] ? (
+                    <img
+                      src={urlFor(item.images[0]).width(100).url()}
+                      alt={item.title || "Pakke"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span>🎁</span>
+                  )}
                 </div>
 
+                {/* 📦 INFO */}
                 <div>
                   <h2 className="font-medium">
                     {item.title || "Produktpakke"}
@@ -124,7 +137,7 @@ export default function CartPage() {
                     Pakkepris 💸 {item.price} kr
                   </p>
                 </div>
-              </>
+              </Link>
             )}
 
             {/* ➕➖ */}

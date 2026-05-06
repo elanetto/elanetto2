@@ -13,7 +13,6 @@ export default function Products() {
 
   const PAGE_SIZE = 6;
 
-  // 🔄 Reset page når filter endres
   useEffect(() => {
     setPage(1);
   }, [search, sort, category]);
@@ -41,21 +40,40 @@ export default function Products() {
           coalesce(description.no, "") match $term${i} ||
           $rawTerm${i} in tags
         )
-      `
+      `,
               )
               .join(" && ")
           : "true";
 
       const categoryFilter =
-        category === "all" ? "true" : `category == $category`;
+        category === "all"
+          ? "true"
+          : category === "bundle"
+            ? `_type == "bundle"`
+            : `category == $category`;
 
       const query = `
-        *[_type == "product" &&
+        *[
+          (_type == "product" || _type == "bundle") &&
           ${categoryFilter} &&
           ${searchFilter}
         ]
         | order(${order})
         [0...${page * PAGE_SIZE}]
+        {
+          _id,
+          _type,
+          title,
+          slug,
+          price,
+          images,
+          image,
+          category,
+          products[]->{
+            price,
+            images
+          }
+        }
       `;
 
       const params = searchTerms.reduce((acc, term, i) => {
@@ -64,13 +82,44 @@ export default function Products() {
         return acc;
       }, {});
 
-      if (category !== "all") {
+      if (category !== "all" && category !== "bundle") {
         params.category = category;
       }
 
       const data = await client.fetch(query, params);
 
-      setProducts(data);
+      // 🔥 NORMALISER DATA
+      const normalized = data.map((item) => {
+        if (item._type === "bundle") {
+          const total = (item.products || []).reduce(
+            (sum, p) => sum + (p.price || 0),
+            0,
+          );
+
+          const discounted = total * 0.8;
+          const price = Math.round(discounted / 5) * 5;
+
+          return {
+            ...item,
+            price,
+            isBundle: true,
+
+            // 🔥 HER ER MAGIEN
+            images: item.image
+              ? [item.image]
+              : item.products?.[0]?.images?.[0]
+                ? [item.products[0].images[0]]
+                : [],
+          };
+        }
+
+        return {
+          ...item,
+          isBundle: false,
+        };
+      });
+
+      setProducts(normalized);
     };
 
     fetchProducts();
@@ -79,13 +128,15 @@ export default function Products() {
   return (
     <div className="px-6 py-10 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">
-        {category === "all"
-          ? "Alle produkter"
-          : category === "sticker"
-          ? "Klistremerker"
-          : category === "bookmark"
-          ? "Bokmerker"
-          : "Kort"}
+        {category === "bundle"
+          ? "Pakker 🎁"
+          : category === "all"
+            ? "Alle produkter"
+            : category === "sticker"
+              ? "Klistremerker"
+              : category === "bookmark"
+                ? "Bokmerker"
+                : "Kort"}
       </h1>
 
       {/* 🔎 FILTERS */}
@@ -108,6 +159,7 @@ export default function Products() {
             { value: "sticker", label: "Klistremerker" },
             { value: "bookmark", label: "Bokmerker" },
             { value: "card", label: "Kort" },
+            { value: "bundle", label: "Pakker 🎁" },
           ]}
         />
 
@@ -123,7 +175,7 @@ export default function Products() {
         />
       </div>
 
-      {/* 🛍️ PRODUKTER */}
+      {/* 🛍️ GRID */}
       {products.length === 0 ? (
         <p className="text-center text-gray-500 mt-10">
           Ingen produkter funnet 😢
@@ -134,7 +186,11 @@ export default function Products() {
             <ProductCard
               key={product._id}
               product={product}
-              link={`#/produkt/${product.slug?.current}`}
+              link={
+                product.isBundle
+                  ? `#/bundle/${product.slug?.current}`
+                  : `#/produkt/${product.slug?.current}`
+              }
             />
           ))}
         </div>
