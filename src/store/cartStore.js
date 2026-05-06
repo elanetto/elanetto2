@@ -6,40 +6,53 @@ export const useCartStore = create(
     (set) => ({
       cart: [],
 
-      addToCart: (product) =>
+      addToCart: (item) =>
         set((state) => {
+          // 🔥 Unik key: bundles må ikke krasje med produkter
+          const itemKey = item.isBundle
+            ? `bundle-${item._id}`
+            : `product-${item._id}`;
+
           const existing = state.cart.find(
-            (item) => item._id === product._id
+            (i) => i.cartKey === itemKey
           );
 
           if (existing) {
             return {
-              cart: state.cart.map((item) =>
-                item._id === product._id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item
+              cart: state.cart.map((i) =>
+                i.cartKey === itemKey
+                  ? { ...i, quantity: i.quantity + 1 }
+                  : i
               ),
             };
           }
 
           return {
-            cart: [...state.cart, { ...product, quantity: 1 }],
+            cart: [
+              ...state.cart,
+              {
+                ...item,
+                cartKey: itemKey, // 🔑 viktig!
+                quantity: 1,
+              },
+            ],
           };
         }),
 
-      removeFromCart: (id) =>
+      removeFromCart: (cartKey) =>
         set((state) => ({
-          cart: state.cart.filter((item) => item._id !== id),
+          cart: state.cart.filter((item) => item.cartKey !== cartKey),
         })),
 
-      updateQuantity: (id, quantity) =>
+      updateQuantity: (cartKey, quantity) =>
         set((state) => ({
           cart: state.cart.map((item) =>
-            item._id === id ? { ...item, quantity } : item
+            item.cartKey === cartKey
+              ? { ...item, quantity }
+              : item
           ),
         })),
 
-      // 🧹 NY
       clearCart: () => set({ cart: [] }),
     }),
     {

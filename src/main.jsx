@@ -11,6 +11,7 @@ import CartPage from "./pages/Handlekurv"
 import TagPage from "./pages/TagPage"
 import Success from "./pages/Success"
 import Cancel from "./pages/Cancel"
+import Bundle from "./pages/Bundle/BundlePage"
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/cancel",
         element: <Cancel />,
+      },
+      {
+        path: "/pakke/:slug",
+        element: <Bundle />,
       }
     ],
   },

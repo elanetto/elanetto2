@@ -10,14 +10,14 @@ export default function CartPage() {
   const [loading, setLoading] = useState(false);
 
   const increase = (item) => {
-    updateQuantity(item._id, item.quantity + 1);
+    updateQuantity(item.cartKey, item.quantity + 1);
   };
 
   const decrease = (item) => {
     if (item.quantity === 1) {
-      removeFromCart(item._id);
+      removeFromCart(item.cartKey);
     } else {
-      updateQuantity(item._id, item.quantity - 1);
+      updateQuantity(item.cartKey, item.quantity - 1);
     }
   };
 
@@ -29,7 +29,6 @@ export default function CartPage() {
   const shipping = subtotal > 500 ? 0 : cart.length > 0 ? 49 : 0;
   const total = subtotal + shipping;
 
-  // 💳 STRIPE CHECKOUT
   const handleCheckout = async () => {
     if (loading) return;
 
@@ -38,15 +37,15 @@ export default function CartPage() {
     try {
       const items = cart.map((item) => ({
         _id: item._id,
-        title: item.title?.no || "Produkt",
+        title: item.title?.no || item.title || "Produkt",
         price: item.price,
         quantity: item.quantity,
+        isBundle: item.isBundle || false,
         image: item.images?.[0]
           ? urlFor(item.images[0]).width(500).url()
           : null,
       }));
 
-      // 💾 lagre ordre til success-siden
       localStorage.setItem("lastOrder", JSON.stringify(items));
 
       const res = await fetch("/api/create-checkout-session", {
@@ -57,9 +56,7 @@ export default function CartPage() {
         body: JSON.stringify({ items }),
       });
 
-      if (!res.ok) {
-        throw new Error("Server error");
-      }
+      if (!res.ok) throw new Error("Server error");
 
       const data = await res.json();
 
@@ -84,31 +81,53 @@ export default function CartPage() {
       <div className="flex flex-col gap-4">
         {cart.map((item) => (
           <div
-            key={item._id}
+            key={item.cartKey}
             className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 bg-white rounded-xl p-4 shadow"
           >
-            <Link
-              to={`/produkt/${item.slug?.current}`}
-              className="contents group cursor-pointer"
-            >
-              <img
-                src={
-                  item.images?.[0]
-                    ? urlFor(item.images[0]).width(100).url()
-                    : "https://via.placeholder.com/100"
-                }
-                alt={item.title?.no || "Produktbilde"}
-                className="w-16 h-16 object-cover rounded-lg group-hover:scale-105 transition"
-              />
+            {/* 🔗 LINK (kun for vanlige produkter) */}
+            {!item.isBundle ? (
+              <Link
+                to={`/produkt/${item.slug?.current}`}
+                className="contents group cursor-pointer"
+              >
+                <img
+                  src={
+                    item.images?.[0]
+                      ? urlFor(item.images[0]).width(100).url()
+                      : "https://via.placeholder.com/100"
+                  }
+                  alt={item.title?.no || "Produktbilde"}
+                  className="w-16 h-16 object-cover rounded-lg group-hover:scale-105 transition"
+                />
 
-              <div>
-                <h2 className="font-medium group-hover:underline">
-                  {item.title?.no || "Ukjent produkt"}
-                </h2>
-                <p className="text-sm text-gray-500">{item.price} kr per stk</p>
-              </div>
-            </Link>
+                <div>
+                  <h2 className="font-medium group-hover:underline">
+                    {item.title?.no || "Ukjent produkt"}
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    {item.price} kr per stk
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              // 🧩 BUNDLE VISNING
+              <>
+                <div className="w-16 h-16 bg-[#e8b6b9] rounded-lg flex items-center justify-center">
+                  🎁
+                </div>
 
+                <div>
+                  <h2 className="font-medium">
+                    {item.title || "Produktpakke"}
+                  </h2>
+                  <p className="text-sm text-purple-600">
+                    Pakkepris 💸 {item.price} kr
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* ➕➖ */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => decrease(item)}
@@ -127,6 +146,7 @@ export default function CartPage() {
               </button>
             </div>
 
+            {/* 💰 TOTAL */}
             <p className="font-semibold min-w-[80px] text-right">
               {item.price * item.quantity} kr
             </p>
@@ -169,13 +189,12 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* 💳 CTA */}
           <button
             onClick={handleCheckout}
             disabled={loading}
             className={`mt-4 px-6 py-3 rounded-xl text-white transition 
-    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#6e3b34] hover:opacity-90"}
-  `}
+              ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#6e3b34] hover:opacity-90"}
+            `}
           >
             {loading ? "Sender deg til betaling..." : "Gå til betaling"}
           </button>
