@@ -28,8 +28,8 @@ export default function ProductCard({ product }) {
 
         {/* 🎁 BUNDLE BADGE */}
         {product.isBundle && (
-          <span className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-2 py-1 rounded-full shadow">
-            Pakke 🎁
+          <span className="absolute top-3 left-3 bg-brun-01 text-white text-xs px-2 py-1 rounded-full shadow">
+            -20% pakkepris
           </span>
         )}
 
