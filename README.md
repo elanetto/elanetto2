@@ -1,4 +1,4 @@
-Testing gjennom Vercel: [Testing-testing!](https://elanetto2.vercel.app/)
+Testing med Stripe gjennom Vercel: [Testing-testing!](https://elanetto2.vercel.app/)
 
 ![image](https://raw.githubusercontent.com/elanetto/images/refs/heads/main/img/readme-images/elanetto2-readme-img.png)
 # elanetto Design
