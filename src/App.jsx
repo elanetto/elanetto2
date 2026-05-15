@@ -12,10 +12,22 @@ import carouselImage4 from "./assets/images/carousel/carousel-yellow-week.jpg";
 
 function App() {
   const carouselImages = [
-    carouselImage1,
-    carouselImage2,
-    carouselImage3,
-    carouselImage4,
+    {
+      image: carouselImage1,
+      slug: "produkt/ut-pa-tur-aldri-sur",
+    },
+    {
+      image: carouselImage2,
+      slug: "pakke/derp-duck-pakke",
+    },
+    {
+      image: carouselImage3,
+      slug: "produkt/tea-time",
+    },
+    {
+      image: carouselImage4,
+      slug: "yellow-week",
+    },
   ];
 
   return (
