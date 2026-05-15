@@ -26,7 +26,7 @@ function App() {
     },
     {
       image: carouselImage4,
-      slug: "yellow-week",
+      slug: "produkt/gul-ukeplanlegger",
     },
   ];
 
