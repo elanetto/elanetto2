@@ -11,6 +11,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const addToCart = useCartStore((state) => state.addToCart);
   const [added, setAdded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     client
@@ -28,18 +29,12 @@ export default function ProductPage() {
     <div className="max-w-5xl mx-auto px-6 py-10">
       {/* GRID */}
       <div className="grid md:grid-cols-2 gap-12">
-        
         {/* 🖼️ IMAGE GALLERY */}
-        <ImageGallery
-          images={product.images}
-          title={product.title?.no}
-        />
+        <ImageGallery images={product.images} title={product.title?.no} />
 
         {/* INFO */}
         <div className="flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-2">
-            {product.title?.no}
-          </h1>
+          <h1 className="text-3xl font-bold mb-2">{product.title?.no}</h1>
 
           <p className="text-sm uppercase text-gray-500 mb-3">
             {product.category === "sticker" && "Klistremerke"}
@@ -47,25 +42,35 @@ export default function ProductPage() {
             {product.category === "card" && "Kort"}
           </p>
 
-          <p className="text-2xl font-semibold mb-4">
-            {product.price} kr
-          </p>
+          <p className="text-2xl font-semibold mb-4">{product.price} kr</p>
 
           <p className="text-sm mb-5">
             {product.inStock ? (
-              <span className="text-green-600 font-medium">
-                ✔ På lager
-              </span>
+              <span className="text-green-600 font-medium">✔ På lager</span>
             ) : (
-              <span className="text-red-500 font-medium">
-                Ikke på lager
-              </span>
+              <span className="text-red-500 font-medium">Ikke på lager</span>
             )}
           </p>
 
-          <p className="text-gray-700 mb-4">
-            {product.description?.no}
-          </p>
+          {/* DECRIPTION */}
+          <div className="mb-4">
+            <p
+              className={`text-gray-700 whitespace-pre-line transition-all duration-300 ${
+                expanded ? "" : "line-clamp-6"
+              }`}
+            >
+              {product.description?.no}
+            </p>
+
+            {product.description?.no?.length > 300 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="mt-2 text-sm font-medium text-[#6e3b34] hover:underline"
+              >
+                {expanded ? "Vis mindre" : "Les mer"}
+              </button>
+            )}
+          </div>
 
           {product.size?.width && product.size?.height && (
             <div className="bg-white/60 rounded-lg px-4 py-3 mb-6 text-sm">
@@ -107,9 +112,7 @@ export default function ProductPage() {
 
       {/* ⭐ REVIEWS */}
       <div className="mt-16 border-t pt-10">
-        <h2 className="text-2xl font-bold mb-4">
-          Anmeldelser
-        </h2>
+        <h2 className="text-2xl font-bold mb-4">Anmeldelser</h2>
 
         <ReviewList productId={product._id} />
 
