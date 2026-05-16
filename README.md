@@ -2,7 +2,7 @@ Bygger en nettbutikk med Stripe sandbox gjennom Vercel: [Testing-testing!](https
 
 ![image](https://raw.githubusercontent.com/elanetto/images/refs/heads/main/img/readme-images/elanetto2-readme-img.png)
 # elanetto Design
-En landingsnettside som brukes mens man bygger opp nettbutikken. Besøk siden her: https://www.elanetto.no/ 
+En landingsnettside som brukes mens jeg bygger opp nettbutikken. Besøk siden her: https://www.elanetto.no/ 
 
 Dette er det første React prosjektet jeg har satt opp med webhosting i Domeneshop.
 
