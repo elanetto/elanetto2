@@ -39,23 +39,20 @@ export default async function handler(req, res) {
 
       // 📧 Send kvittering automatisk til kunden
       payment_intent_data: {
-        receipt_email: null, // Stripe bruker eposten kunden oppgir i Checkout
+        receipt_email: null,
       },
-
-      // 👤 Opprett alltid en kunde i Stripe (lagrer epost og info)
-      customer_creation: "always",
 
       // 📦 BE OM ADRESSE
       shipping_address_collection: {
         allowed_countries: ["NO"],
       },
 
-      // 📱 (valgfritt, men veldig nyttig)
+      // 📱
       phone_number_collection: {
         enabled: true,
       },
 
-      // 🧾 dette gjør at Stripe lagrer info på kunden
+      // 🧾
       billing_address_collection: "auto",
 
       // ✅ Redirects
