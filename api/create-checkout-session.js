@@ -37,6 +37,14 @@ export default async function handler(req, res) {
       line_items,
       mode: "payment",
 
+      // 📧 Send kvittering automatisk til kunden
+      payment_intent_data: {
+        receipt_email: null, // Stripe bruker eposten kunden oppgir i Checkout
+      },
+
+      // 👤 Opprett alltid en kunde i Stripe (lagrer epost og info)
+      customer_creation: "always",
+
       // 📦 BE OM ADRESSE
       shipping_address_collection: {
         allowed_countries: ["NO"],
