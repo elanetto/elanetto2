@@ -11,7 +11,7 @@ export default function Products() {
   const [category, setCategory] = useState("all");
   const [page, setPage] = useState(1);
 
-  const PAGE_SIZE = 6;
+  const PAGE_SIZE = 12;
 
   useEffect(() => {
     setPage(1);
@@ -127,7 +127,7 @@ export default function Products() {
 
   return (
     <div className="px-6 py-10 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-5xl text-brun-01 mt-2 chewy-regular pb-4">
         {category === "bundle"
           ? "Pakker 🎁"
           : category === "all"

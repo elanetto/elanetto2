@@ -2,11 +2,13 @@
 
 @theme {
   --color-dirtyrosa: #DD6A84;
+  --color-dirtyred: #BB5052;
   --color-light-dirtyrosa: #DBB0B2;
   --color-bleik: #EAD5DF;
   --color-rosa-01: #E9A4A4;
   --color-rosa-02: #C17373;
   --color-brun-01: #6e3b34;
+  --color-brun-02: #472723;
   --color-rosabg: #e8b6b9;
 
 }
