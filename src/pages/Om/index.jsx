@@ -4,7 +4,14 @@ import anetteImage1 from "./../../assets/images/anette/anette-stand-bogerud-2.jp
 import anetteImage2 from "./../../assets/images/anette/anette-stand-bogerud-1.jpg";
 
 function Om() {
-  const anetteImages = [anetteImage1, anetteImage2];
+  const anetteImages = [
+    {
+      image: anetteImage1,
+    },
+    {
+      image: anetteImage2,
+    },
+  ];
 
   return (
     <div className="w-full flex flex-col items-center mx-auto justify-center py-10">

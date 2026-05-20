@@ -14,19 +14,25 @@ export function CarouselComponent({ images = [], title }) {
           interval={5000}
           className="mb-6 rounded-xl shadow"
         >
-          {images.map((img, index) => (
-            <Link
-              key={index}
-              to={`/${img.slug}`}
-              className="block"
-            >
+          {images.map((img, index) => {
+            const content = (
               <img
                 src={img.image}
                 alt={`Slide ${index + 1} for ${title}`}
-                className="rounded-xl h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center w-full cursor-pointer hover:opacity-95 transition"
+                className={`rounded-xl h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center w-full transition ${img.slug ? "cursor-pointer hover:opacity-95" : ""}`}
               />
-            </Link>
-          ))}
+            );
+
+            return img.slug ? (
+              <Link key={index} to={`/${img.slug}`} className="block">
+                {content}
+              </Link>
+            ) : (
+              <div key={index}>
+                {content}
+              </div>
+            );
+          })}
         </Carousel>
       )}
     </>
