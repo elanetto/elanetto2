@@ -37,11 +37,6 @@ export default async function handler(req, res) {
       line_items,
       mode: "payment",
 
-      // 📧 Send kvittering automatisk til kunden
-      payment_intent_data: {
-        receipt_email: null,
-      },
-
       // 📦 BE OM ADRESSE
       shipping_address_collection: {
         allowed_countries: ["NO"],
