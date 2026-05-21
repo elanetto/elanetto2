@@ -1,8 +1,6 @@
 import { CarouselComponent } from "./components/Carousel";
 import InstagramEmbed from "./components/InstagramEmbed";
 import FeaturedEtsyProducts from "./components/FeaturedEtsyProducts";
-import video from "./assets/video/S0003-video.MP4";
-import videoPreview from "./assets/video/S0003-02.jpg";
 import Products from "./components/Products";
 
 import carouselImage1 from "./assets/images/carousel/carousel-backpack.jpg";
@@ -45,17 +43,6 @@ function App() {
         <p className="italic">- Anette</p>
       </div>
 
-
-      <div className="w-full max-w-4xl px-4 sm:px-6 md:px-8 mt-10">
-        <video
-          src={video}
-          controls
-          className="w-full rounded-xl shadow-lg"
-          poster={videoPreview}
-        >
-          Your browser does not support the video tag.
-        </video>
-      </div>
       <div className="w-full max-w-4xl ">
         <Products />
       </div>
