@@ -74,5 +74,3 @@ PS: Jeg måtte også bruke en direkte link til opplastet bilde i root index.html
 # React Pakker
 I dette prosjektet har jeg brukt følgende React Packages:
 - [React Responsive Carousel](https://www.npmjs.com/package/react-responsive-carousel)
-
-hei
